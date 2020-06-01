@@ -33,14 +33,14 @@ Cell[][] cells;
 		//2. Calculate the cell size.
 		this.cellSize = w/cpr;
 		//3. Initialize the cell array to the appropriate size.
-		cells = new Cell[cellSize][cellSize];
+		cells = new Cell[cellsPerRow][cellsPerRow];
 
 		//3. Iterate through the array and initialize each cell.
 		//   Don't forget to consider the cell's dimensions when 
 		//   passing in the location.
-		for(int i = 0; i < cellSize; i ++) {
-			for(int j = 0; j < cellSize; j ++) {
-				cells[i][j] = new Cell(i*cellSize, j*cellSize, cellSize);
+		for(int i = 0; i < cellsPerRow; i ++) {
+			for(int j = 0; j < cellsPerRow; j ++) {
+				cells[i][j] = new Cell(i*cellsPerRow, j*cellsPerRow, cellSize);
 			}
 		}
 		
@@ -49,17 +49,29 @@ Cell[][] cells;
 	public void randomizeCells() {
 		//4. Iterate through each cell and randomly set each
 		//   cell's isAlive member to true of false
-		for (Cell[] cells2 : cells) {
-			Random r = new Random();
-			int num = r.nextInt(cells.length);
-			
+		Random r = new Random();
+		int num = r.nextInt(2);
+		for(int i = 0; i < cellsPerRow; i ++){
+			for(int j = 0; j < cellsPerRow; j ++) {
+				if(num == 0) {
+					cells[i][j].isAlive = true;
+				}
+				else {
+					cells[i][j].isAlive = false;
+
+				}
+			}
 		}
 		repaint();
 	}
 	
 	public void clearCells() {
 		//5. Iterate through the cells and set them all to dead.
-		
+		for(int i = 0; i < cellsPerRow; i ++){
+			for(int j = 0; j < cellsPerRow; j ++) {
+				cells[i][j].isAlive = false;
+			}
+		}
 		repaint();
 	}
 	
@@ -78,8 +90,11 @@ Cell[][] cells;
 	@Override
 	public void paintComponent(Graphics g) {
 		//6. Iterate through the cells and draw them all
-		
-		
+		for(int i = 0; i < cellSize-1; i ++){
+			for(int j = 0; j < cellSize-1; j ++) {
+				cells[i][j].draw(g);
+			}
+		}
 		
 		// draws grid
 		g.setColor(Color.BLACK);
@@ -91,7 +106,11 @@ Cell[][] cells;
 		//7. iterate through cells and fill in the livingNeighbors array
 		// . using the getLivingNeighbors method.
 		int[][] livingNeighbors = new int[cellsPerRow][cellsPerRow];
-		
+		for(int i = 0; i < cellSize-1; i ++){
+			for(int j = 0; j < cellSize-1; j ++) {
+
+			}
+		}
 		//8. check if each cell should live or die
 	
 		
