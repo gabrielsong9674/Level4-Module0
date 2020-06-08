@@ -90,8 +90,8 @@ Cell[][] cells;
 	@Override
 	public void paintComponent(Graphics g) {
 		//6. Iterate through the cells and draw them all
-		for(int i = 0; i < cellSize-1; i ++){
-			for(int j = 0; j < cellSize-1; j ++) {
+		for(int i = 0; i < cellsPerRow; i ++){
+			for(int j = 0; j < cellsPerRow; j ++) {
 				cells[i][j].draw(g);
 			}
 		}
@@ -106,16 +106,17 @@ Cell[][] cells;
 		//7. iterate through cells and fill in the livingNeighbors array
 		// . using the getLivingNeighbors method.
 		int[][] livingNeighbors = new int[cellsPerRow][cellsPerRow];
-		for(int i = 0; i < cellSize-1; i ++){
-			for(int j = 0; j < cellSize-1; j ++) {
-
+		for(int i = 0; i < cellsPerRow; i ++){
+			for(int j = 0; j < cellsPerRow-1; j ++) {
+				livingNeighbors[i][j] = getLivingNeighbors(i, j);
 			}
 		}
 		//8. check if each cell should live or die
-	
-		
-		
-		
+		for(int i = 0; i < cellsPerRow; i ++){
+			for(int j = 0; j < cellsPerRow-1; j ++) {
+				cells[i][j].liveOrDie(getLivingNeighbors(i, j));
+			}
+		}
 		repaint();
 	}
 	
@@ -124,7 +125,21 @@ Cell[][] cells;
 	//   living neighbors there are of the 
 	//   cell identified by x and y
 	public int getLivingNeighbors(int x, int y){
-		return 0;
+		int count = 0;
+		if(cells[x+1][y].isAlive) {
+			count++;
+		}
+		if(cells[x-1][y].isAlive) {
+			count++;
+		}
+		if(cells[x][y+1].isAlive) {
+			count++;
+		}
+		if(cells[x][y-1].isAlive) {
+			count++;
+		}
+		
+		return count;
 	}
 
 	@Override
