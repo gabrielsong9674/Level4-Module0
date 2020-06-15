@@ -40,7 +40,9 @@ Cell[][] cells;
 		//   passing in the location.
 		for(int i = 0; i < cellsPerRow; i ++) {
 			for(int j = 0; j < cellsPerRow; j ++) {
-				cells[i][j] = new Cell(i*cellsPerRow, j*cellsPerRow, cellSize);
+				cells[i][j] = new Cell(i*cellSize, j*cellSize, cellSize);
+	
+
 			}
 		}
 		
@@ -50,9 +52,10 @@ Cell[][] cells;
 		//4. Iterate through each cell and randomly set each
 		//   cell's isAlive member to true of false
 		Random r = new Random();
-		int num = r.nextInt(2);
+		int num;
 		for(int i = 0; i < cellsPerRow; i ++){
 			for(int j = 0; j < cellsPerRow; j ++) {
+				 num = r.nextInt(8);
 				if(num == 0) {
 					cells[i][j].isAlive = true;
 				}
@@ -106,17 +109,13 @@ Cell[][] cells;
 		//7. iterate through cells and fill in the livingNeighbors array
 		// . using the getLivingNeighbors method.
 		int[][] livingNeighbors = new int[cellsPerRow][cellsPerRow];
-		for(int i = 0; i < cellsPerRow; i ++){
-			for(int j = 0; j < cellsPerRow-1; j ++) {
+		for(int i = 1; i < cellsPerRow-1; i ++){
+			for(int j = 1; j < cellsPerRow-1; j ++) {
 				livingNeighbors[i][j] = getLivingNeighbors(i, j);
 			}
 		}
 		//8. check if each cell should live or die
-		for(int i = 0; i < cellsPerRow; i ++){
-			for(int j = 0; j < cellsPerRow-1; j ++) {
-				cells[i][j].liveOrDie(getLivingNeighbors(i, j));
-			}
-		}
+		
 		repaint();
 	}
 	
@@ -126,17 +125,20 @@ Cell[][] cells;
 	//   cell identified by x and y
 	public int getLivingNeighbors(int x, int y){
 		int count = 0;
-		if(cells[x+1][y].isAlive) {
+		if(x != 0 || y != 0) {
+		 if(cells[x+1][y].isAlive) {
 			count++;
 		}
-		if(cells[x-1][y].isAlive) {
+		else if(cells[x-1][y].isAlive) {
 			count++;
 		}
-		if(cells[x][y+1].isAlive) {
+		else if(cells[x][y+1].isAlive) {
 			count++;
 		}
-		if(cells[x][y-1].isAlive) {
+		
+		else if(cells[x][y-1].isAlive) {
 			count++;
+		}	
 		}
 		
 		return count;
@@ -164,10 +166,17 @@ Cell[][] cells;
 		//10. Use e.getX() and e.getY() to determine
 		//    which cell is clicked. Then toggle
 		//    the isAlive variable for that cell.
-		
-		
-		
-		
+		if(cells[e.getX()/cellSize][e.getY()/cellSize].isAlive) {
+			cells[e.getX()/cellSize][e.getY()/cellSize].isAlive = false;
+			System.out.println("dead");
+		}
+		else{
+			cells[e.getX()/cellSize][e.getY()/cellSize].isAlive = true;
+			System.out.println("alive");
+
+		}
+
+
 		repaint();
 	}
 
