@@ -55,7 +55,7 @@ Cell[][] cells;
 		int num;
 		for(int i = 0; i < cellsPerRow; i ++){
 			for(int j = 0; j < cellsPerRow; j ++) {
-				 num = r.nextInt(8);
+				 num = r.nextInt(2);
 				if(num == 0) {
 					cells[i][j].isAlive = true;
 				}
@@ -70,8 +70,8 @@ Cell[][] cells;
 	
 	public void clearCells() {
 		//5. Iterate through the cells and set them all to dead.
-		for(int i = 0; i < cellsPerRow; i ++){
-			for(int j = 0; j < cellsPerRow; j ++) {
+		for(int i = 0; i < cells.length; i ++){
+			for(int j = 0; j < cells.length; j ++) {
 				cells[i][j].isAlive = false;
 			}
 		}
@@ -93,8 +93,8 @@ Cell[][] cells;
 	@Override
 	public void paintComponent(Graphics g) {
 		//6. Iterate through the cells and draw them all
-		for(int i = 0; i < cellsPerRow; i ++){
-			for(int j = 0; j < cellsPerRow; j ++) {
+		for(int i = 0; i < cells.length; i ++){
+			for(int j = 0; j < cells.length; j ++) {
 				cells[i][j].draw(g);
 			}
 		}
@@ -108,14 +108,21 @@ Cell[][] cells;
 	public void step() {
 		//7. iterate through cells and fill in the livingNeighbors array
 		// . using the getLivingNeighbors method.
-		int[][] livingNeighbors = new int[cellsPerRow][cellsPerRow];
-		for(int i = 1; i < cellsPerRow-1; i ++){
-			for(int j = 1; j < cellsPerRow-1; j ++) {
+		int[][] livingNeighbors = new int[cells.length][cells.length];
+		for(int i = 0; i < cells.length; i ++){
+			for(int j = 0; j < cells.length; j ++) {
 				livingNeighbors[i][j] = getLivingNeighbors(i, j);
+			
 			}
 		}
-		//8. check if each cell should live or die
 		
+		//8. check if each cell should live or die
+		for(int i = 0; i < cells.length; i ++){
+			for(int j = 0; j < cells.length; j ++) {
+				cells[i][j].liveOrDie(livingNeighbors[i][j]);
+			}
+		}
+
 		repaint();
 	}
 	
@@ -125,22 +132,17 @@ Cell[][] cells;
 	//   cell identified by x and y
 	public int getLivingNeighbors(int x, int y){
 		int count = 0;
-		if(x != 0 || y != 0) {
-		 if(cells[x+1][y].isAlive) {
-			count++;
+		for(int i = x-1; i < x+2; i++) {
+			for(int j = y-1; j < y+2; j ++) {
+				if(i >= 0 && i < cells.length && j >= 0 && j < cells.length) {
+					if(i != x || j != y) {
+						if(cells[i][j].isAlive) {
+							count ++;
+						}
+					}
+				}
+			}
 		}
-		else if(cells[x-1][y].isAlive) {
-			count++;
-		}
-		else if(cells[x][y+1].isAlive) {
-			count++;
-		}
-		
-		else if(cells[x][y-1].isAlive) {
-			count++;
-		}	
-		}
-		
 		return count;
 	}
 
@@ -168,11 +170,9 @@ Cell[][] cells;
 		//    the isAlive variable for that cell.
 		if(cells[e.getX()/cellSize][e.getY()/cellSize].isAlive) {
 			cells[e.getX()/cellSize][e.getY()/cellSize].isAlive = false;
-			System.out.println("dead");
 		}
 		else{
 			cells[e.getX()/cellSize][e.getY()/cellSize].isAlive = true;
-			System.out.println("alive");
 
 		}
 
