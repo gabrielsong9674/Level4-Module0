@@ -11,7 +11,7 @@ public class Maze {
 		this.width = w;
 		this.height = h;
 
-		//2. Initialize the cells using the width and height varibles
+		//2. Initialize the cells using the width and height variables
 		cells = new Cell[w][h];
 		//3. Iterated through each cell and initialize it
 		//   using i and j as the location
@@ -24,16 +24,18 @@ public class Maze {
 
 	//4. This method iterates through the cells and draws them
 	public void draw(Graphics g) {
+		
 		for(int i = 0; i < cells.length; i ++) {
 			for(int j = 0; j < cells.length; j ++) {
 				cells[i][j].draw(g);
+				
 			}
 		}
 	}
 	
 	//4b. This method returns the selected cell.
 	public Cell getCell(int x, int y){
-		return  null;
+		return  cells[x][y];
 	}
 
 	public int getWidth() {
