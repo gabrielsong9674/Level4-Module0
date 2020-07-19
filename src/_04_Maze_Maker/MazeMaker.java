@@ -26,9 +26,11 @@ public class MazeMaker{
 		//4. select a random cell to start
 		int randX = randGen.nextInt(width);
 		int randY = randGen.nextInt(height);
+		
 		//5. call selectNextPath method with the randomly selected cell
 		selectNextPath(maze.getCell(randX, randY));
 		
+		makeStart();
 		return maze;
 	}
 
@@ -55,9 +57,9 @@ public class MazeMaker{
 		}	
 			
 		//D. if all neighbors are visited
-		if(unvisitedNeighbors.size() == 4) {
+		if(unvisitedNeighbors.size() == 0) {
 			//D1. if the stack is not empty
-			if(uncheckedCells != null) {
+			if(uncheckedCells.isEmpty() == false) {
 				// D1a. pop a cell from the stack
 				// D1b. make that the current cell
 				currentCell = uncheckedCells.pop();
@@ -88,7 +90,6 @@ public class MazeMaker{
 			c2.setNorthWall(false);
 			c1.setSouthWall(false);
 		}
-		System.out.println("remove");
 	}
 	
 	//8. Complete the getUnvisitedNeighbors method
@@ -97,26 +98,35 @@ public class MazeMaker{
 	private static ArrayList<Cell> getUnvisitedNeighbors(Cell c) {
 		ArrayList<Cell> unvisited = new ArrayList<Cell>();
 		if(c.getX()<width-1) {
-			if(maze.cells[c.getX()+1][c.getY()].hasBeenVisited()) {
+			if(maze.cells[c.getX()+1][c.getY()].hasBeenVisited() == false) {
 				unvisited.add(maze.cells[c.getX()+1][c.getY()]);
 			}
 		}
 		if(c.getX() > 0) {
-			if(maze.cells[c.getX()-1][c.getY()].hasBeenVisited()) {
-				unvisited.add(maze.cells[c.getX()+1][c.getY()]);
+			if(maze.cells[c.getX()-1][c.getY()].hasBeenVisited() == false) {
+				unvisited.add(maze.cells[c.getX()-1][c.getY()]);
 			}
 		}
 		if(c.getY() > 0) {
-			if(maze.cells[c.getX()][c.getY()-1].hasBeenVisited()) {
+			if(maze.cells[c.getX()][c.getY()-1].hasBeenVisited() == false) {
 				unvisited.add(maze.cells[c.getX()][c.getY()-1]);
 			}
 		}
 		if(c.getY() < width-1) {
-			if(maze.cells[c.getX()][c.getY()+1].hasBeenVisited()) {
+			if(maze.cells[c.getX()][c.getY()+1].hasBeenVisited() == false) {
 				unvisited.add(maze.cells[c.getX()][c.getY()+1]);
 			}
 		}
-		System.out.println(unvisited.size());
 		return unvisited;
+	}
+	
+	public static void makeStart() {
+		//find random cell along any wall
+		//along west
+		int start = randGen.nextInt(height);
+		maze.getCell(0, start).setWestWall(false);
+		start = randGen.nextInt(height);
+		maze.getCell(width-1, start).setEastWall(false);
+			
 	}
 }
