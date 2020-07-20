@@ -121,8 +121,6 @@ public class MazeMaker{
 	}
 	
 	public static void makeStart() {
-		//find random cell along any wall
-		//along west
 		int start = randGen.nextInt(height);
 		maze.getCell(0, start).setWestWall(false);
 		start = randGen.nextInt(height);
